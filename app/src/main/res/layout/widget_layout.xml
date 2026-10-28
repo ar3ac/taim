@@ -6,44 +6,22 @@
     android:orientation="vertical"
     android:padding="6dp">
 
-    <!-- 1. ORA: 76sp Google Sans Medium (Nativo Pixel, nitido come nella preview) -->
-    <TextClock
-        android:id="@+id/clock_time"
+    <!-- 1. ORA: High-DPI Bitmap Text con font Google Sans SemiBold (Nativo al 100% su qualsiasi Launcher) -->
+    <ImageView
+        android:id="@+id/clock_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:fontFamily="google-sans-medium"
-        android:format12Hour="HH:mm"
-        android:format24Hour="HH:mm"
-        android:includeFontPadding="false"
-        android:shadowColor="#40000000"
-        android:shadowDx="0"
-        android:shadowDy="1"
-        android:shadowRadius="2"
-        android:textColor="#FFFFFFFF"
-        android:textSize="76sp" />
+        android:contentDescription="@string/app_name" />
 
-    <!-- 2. DATA: 19sp Google Sans Regular (Nativo Pixel) -->
-    <TextClock
-        android:id="@+id/clock_date"
+    <!-- 2. DATA: High-DPI Bitmap Text con font Google Sans Regular -->
+    <ImageView
+        android:id="@+id/date_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="3dp"
-        android:gravity="center"
-        android:textAlignment="center"
-        android:fontFamily="google-sans"
-        android:format12Hour="EEEE d MMMM"
-        android:format24Hour="EEEE d MMMM"
-        android:includeFontPadding="false"
-        android:shadowColor="#40000000"
-        android:shadowDx="0"
-        android:shadowDy="1"
-        android:shadowRadius="2"
-        android:textColor="#E6FFFFFF"
-        android:textSize="19sp" />
+        android:contentDescription="@string/widget_name" />
 
     <!-- 3. BATTERIA: Percentuale 24sp + Icona Verticale con badge -->
     <LinearLayout
@@ -55,22 +33,13 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <!-- Percentuale 24sp Google Sans Medium PRIMA dell'icona -->
-        <TextView
-            android:id="@+id/battery_text"
+        <!-- Percentuale 24sp Google Sans SemiBold PRIMA dell'icona -->
+        <ImageView
+            android:id="@+id/battery_text_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:fontFamily="google-sans-medium"
-            android:gravity="center"
-            android:includeFontPadding="false"
-            android:shadowColor="#40000000"
-            android:shadowDx="0"
-            android:shadowDy="1"
-            android:shadowRadius="2"
-            android:text="85%"
-            android:textColor="#FFFFFFFF"
-            android:textSize="24sp" />
+            android:contentDescription="@string/battery" />
 
         <!-- Icona Batteria Verticale (con badge circolare nell'angolo se in carica) -->
         <ImageView

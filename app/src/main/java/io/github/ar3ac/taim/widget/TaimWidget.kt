@@ -15,17 +15,11 @@ import androidx.glance.currentState
 import androidx.glance.layout.fillMaxSize
 import io.github.ar3ac.taim.R
 import io.github.ar3ac.taim.util.BatteryUtils
+import io.github.ar3ac.taim.util.WidgetBitmapRenderer
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
-/**
- * Minimalist Jetpack Glance Home Screen Widget (Taim).
- *
- * Characteristics:
- * - 100% transparent background (no colored container).
- * - Horizontally and vertically centered single column layout.
- * - Digital 24h Time: Inter SemiBold, large font, subtle drop shadow, zero battery drain via TextClock.
- * - Extended Date: Inter Regular, small font, subtle drop shadow.
- * - Battery Row: Material Design vector icon (with bolt when charging) + numerical percentage, Inter SemiBold.
- */
 class TaimWidget : GlanceAppWidget() {
 
     companion object {
@@ -35,19 +29,55 @@ class TaimWidget : GlanceAppWidget() {
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         provideContent {
-            // Read dynamic battery state from Glance PreferencesDataStore with sticky-intent fallback
             val prefs = currentState<Preferences>()
             val currentBattery = remember { BatteryUtils.getBatteryState(context) }
 
             val percentage = prefs[KEY_BATTERY_PERCENTAGE] ?: currentBattery.percentage
             val isCharging = prefs[KEY_IS_CHARGING] ?: currentBattery.isCharging
 
+            val now = Date()
+            val timeString = SimpleDateFormat("HH:mm", Locale.getDefault()).format(now)
+            val dateString = SimpleDateFormat("EEEE d MMMM", Locale.getDefault()).format(now)
+
+            // Render high-DPI bitmaps using authentic Google Sans font
+            val clockBitmap = remember(timeString) {
+                WidgetBitmapRenderer.createTextBitmap(
+                    context = context,
+                    text = timeString,
+                    fontResId = R.font.googlesans_semibold,
+                    textSizeSp = 76f,
+                    textColor = android.graphics.Color.WHITE
+                )
+            }
+
+            val dateBitmap = remember(dateString) {
+                WidgetBitmapRenderer.createTextBitmap(
+                    context = context,
+                    text = dateString,
+                    fontResId = R.font.googlesans_regular,
+                    textSizeSp = 19f,
+                    textColor = android.graphics.Color.argb(230, 255, 255, 255)
+                )
+            }
+
+            val batteryBitmap = remember(percentage) {
+                WidgetBitmapRenderer.createTextBitmap(
+                    context = context,
+                    text = "$percentage%",
+                    fontResId = R.font.googlesans_semibold,
+                    textSizeSp = 24f,
+                    textColor = android.graphics.Color.WHITE
+                )
+            }
+
             val remoteViews = RemoteViews(context.packageName, R.layout.widget_layout).apply {
+                setImageViewBitmap(R.id.clock_image, clockBitmap)
+                setImageViewBitmap(R.id.date_image, dateBitmap)
+                setImageViewBitmap(R.id.battery_text_image, batteryBitmap)
                 setImageViewResource(
                     R.id.battery_icon,
                     if (isCharging) R.drawable.ic_battery_charging else R.drawable.ic_battery_std
                 )
-                setTextViewText(R.id.battery_text, "$percentage%")
             }
 
             AndroidRemoteViews(
