@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <!-- 24h Digital Time (70sp SemiBold with subtle shadow) -->
+    <TextClock
+        android:id="@+id/clock_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:format12Hour="HH:mm"
+        android:format24Hour="HH:mm"
+        android:includeFontPadding="false"
+        android:shadowColor="#80000000"
+        android:shadowDx="1.5"
+        android:shadowDy="2.0"
+        android:shadowRadius="4.0"
+        android:textColor="#FFFFFFFF"
+        android:textSize="70sp" />
+
+    <!-- Extended Date (e.g. "mercoledì 28 ottobre" Regular with subtle shadow) -->
+    <TextClock
+        android:id="@+id/clock_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:fontFamily="sans-serif"
+        android:format12Hour="EEEE d MMMM"
+        android:format24Hour="EEEE d MMMM"
+        android:includeFontPadding="false"
+        android:shadowColor="#80000000"
+        android:shadowDx="1.0"
+        android:shadowDy="1.5"
+        android:shadowRadius="3.0"
+        android:textColor="#FFFFFFFF"
+        android:textSize="15sp" />
+
+</LinearLayout>
+

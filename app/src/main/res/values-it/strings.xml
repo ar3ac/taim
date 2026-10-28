@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Taim</string>
+    <string name="widget_name">Taim Orologio e Batteria</string>
+    <string name="widget_description">Widget minimalista con ora, data e batteria su sfondo trasparente.</string>
+    <string name="add_widget_button">Aggiungi Widget alla Schermata Home</string>
+    <string name="widget_instructions">Aggiungi il widget Taim alla tua schermata home tenendo premuto su uno spazio vuoto del launcher e scegliendo Taim dalla lista Widget.</string>
+    <string name="widget_pinned_success">Widget aggiunto o richiesta inviata al launcher!</string>
+    <string name="pin_not_supported">Aggiunta automatica non supportata dal launcher. Aggiungi il widget manualmente dal selettore widget.</string>
+    <string name="charging">In carica</string>
+    <string name="battery">Batteria</string>
+</resources>
+

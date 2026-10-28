@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Taim</string>
+    <string name="widget_name">Taim Clock &amp; Battery</string>
+    <string name="widget_description">Minimalist clock, date, and battery widget with transparent background.</string>
+    <string name="add_widget_button">Add Widget to Home Screen</string>
+    <string name="widget_instructions">Add the Taim widget to your home screen by holding an empty space on your launcher and choosing Taim from the Widgets list.</string>
+    <string name="widget_pinned_success">Widget added or request sent to home launcher!</string>
+    <string name="pin_not_supported">Automatic pin is not supported by your launcher. Please add the widget manually from the widgets picker.</string>
+    <string name="charging">Charging</string>
+    <string name="battery">Battery</string>
+</resources>
+
