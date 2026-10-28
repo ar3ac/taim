@@ -10,9 +10,10 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -35,10 +36,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -49,7 +51,26 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+val Inter = FontFamily(
+    Font(R.font.inter_regular, FontWeight.Normal),
+    Font(R.font.inter_medium, FontWeight.Medium),
+    Font(R.font.inter_semibold, FontWeight.SemiBold),
+    Font(R.font.inter_bold, FontWeight.Bold)
+)
+
 class MainActivity : ComponentActivity() {
+
+    override fun onResume() {
+        super.onResume()
+        val battery = BatteryUtils.getBatteryState(this)
+        lifecycleScope.launch(Dispatchers.IO) {
+            io.github.ar3ac.taim.receiver.BatteryReceiver.updateAllWidgets(
+                this@MainActivity,
+                battery.percentage,
+                battery.isCharging
+            )
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,12 +102,14 @@ class MainActivity : ComponentActivity() {
                                     text = stringResource(R.string.app_name),
                                     fontSize = 28.sp,
                                     fontWeight = FontWeight.Bold,
+                                    fontFamily = Inter,
                                     color = Color.White
                                 )
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(
                                     text = stringResource(R.string.widget_description),
                                     fontSize = 14.sp,
+                                    fontFamily = Inter,
                                     color = Color.LightGray,
                                     textAlign = TextAlign.Center
                                 )
@@ -114,6 +137,7 @@ class MainActivity : ComponentActivity() {
                                     Text(
                                         text = stringResource(R.string.add_widget_button),
                                         fontWeight = FontWeight.SemiBold,
+                                        fontFamily = Inter,
                                         fontSize = 16.sp
                                     )
                                 }
@@ -123,6 +147,7 @@ class MainActivity : ComponentActivity() {
                                 Text(
                                     text = stringResource(R.string.widget_instructions),
                                     fontSize = 12.sp,
+                                    fontFamily = Inter,
                                     color = Color.Gray,
                                     textAlign = TextAlign.Center
                                 )
@@ -175,19 +200,21 @@ class MainActivity : ComponentActivity() {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                // Digital Time (70sp SemiBold)
+                // Digital Time (60sp SemiBold Inter)
                 Text(
                     text = timeFormat.format(now),
-                    fontSize = 64.sp,
+                    fontSize = 58.sp,
                     fontWeight = FontWeight.SemiBold,
+                    fontFamily = Inter,
                     color = Color.White
                 )
 
-                // Date
+                // Date (Inter Regular)
                 Text(
                     text = dateFormat.format(now),
-                    fontSize = 15.sp,
+                    fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
+                    fontFamily = Inter,
                     color = Color.White
                 )
 
@@ -213,7 +240,8 @@ class MainActivity : ComponentActivity() {
                     Text(
                         text = "${batteryState.percentage}%",
                         fontSize = 14.sp,
-                        fontWeight = FontWeight.Medium,
+                        fontWeight = FontWeight.SemiBold,
+                        fontFamily = Inter,
                         color = Color.White
                     )
                 }
@@ -221,4 +249,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
