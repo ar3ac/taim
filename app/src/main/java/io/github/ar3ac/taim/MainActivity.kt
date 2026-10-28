@@ -51,11 +51,11 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-val Outfit = FontFamily(
-    Font(R.font.outfit_regular, FontWeight.Normal),
-    Font(R.font.outfit_medium, FontWeight.Medium),
-    Font(R.font.outfit_semibold, FontWeight.SemiBold),
-    Font(R.font.outfit_bold, FontWeight.Bold)
+val GoogleSans = FontFamily(
+    Font(R.font.googlesans_regular, FontWeight.Normal),
+    Font(R.font.googlesans_medium, FontWeight.Medium),
+    Font(R.font.googlesans_semibold, FontWeight.SemiBold),
+    Font(R.font.googlesans_bold, FontWeight.Bold)
 )
 
 class MainActivity : ComponentActivity() {
@@ -102,14 +102,14 @@ class MainActivity : ComponentActivity() {
                                     text = stringResource(R.string.app_name),
                                     fontSize = 28.sp,
                                     fontWeight = FontWeight.Bold,
-                                    fontFamily = Outfit,
+                                    fontFamily = GoogleSans,
                                     color = Color.White
                                 )
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(
                                     text = stringResource(R.string.widget_description),
                                     fontSize = 14.sp,
-                                    fontFamily = Outfit,
+                                    fontFamily = GoogleSans,
                                     color = Color.LightGray,
                                     textAlign = TextAlign.Center
                                 )
@@ -137,7 +137,7 @@ class MainActivity : ComponentActivity() {
                                     Text(
                                         text = stringResource(R.string.add_widget_button),
                                         fontWeight = FontWeight.SemiBold,
-                                        fontFamily = Outfit,
+                                        fontFamily = GoogleSans,
                                         fontSize = 16.sp
                                     )
                                 }
@@ -147,7 +147,7 @@ class MainActivity : ComponentActivity() {
                                 Text(
                                     text = stringResource(R.string.widget_instructions),
                                     fontSize = 12.sp,
-                                    fontFamily = Outfit,
+                                    fontFamily = GoogleSans,
                                     color = Color.Gray,
                                     textAlign = TextAlign.Center
                                 )
@@ -200,26 +200,26 @@ class MainActivity : ComponentActivity() {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                // Digital 24h Time (78sp, Outfit SemiBold 600)
+                // Digital 24h Time (76sp, GoogleSans SemiBold 600)
                 Text(
                     text = timeFormat.format(now),
-                    fontSize = 78.sp,
+                    fontSize = 76.sp,
                     fontWeight = FontWeight.SemiBold,
-                    fontFamily = Outfit,
+                    fontFamily = GoogleSans,
                     color = Color.White
                 )
 
-                // Extended Date (19sp, Outfit Regular 400, opacity 0.9)
+                // Extended Date (19sp, GoogleSans Regular 400, opacity 0.9)
                 Text(
                     text = dateFormat.format(now),
                     fontSize = 19.sp,
                     fontWeight = FontWeight.Normal,
-                    fontFamily = Outfit,
+                    fontFamily = GoogleSans,
                     color = Color.White.copy(alpha = 0.9f),
-                    modifier = Modifier.padding(top = 2.dp)
+                    modifier = Modifier.padding(top = 3.dp)
                 )
 
-                // Battery Row (marginTop 14dp, gap 6dp, percentage 24sp first, 24dp icon second)
+                // Battery Row (marginTop 14dp, gap 8dp, percentage 24sp first, 24dp vertical icon second)
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center,
@@ -229,10 +229,10 @@ class MainActivity : ComponentActivity() {
                         text = "${batteryState.percentage}%",
                         fontSize = 24.sp,
                         fontWeight = FontWeight.SemiBold,
-                        fontFamily = Outfit,
+                        fontFamily = GoogleSans,
                         color = Color.White
                     )
-                    Spacer(modifier = Modifier.width(6.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
                     val iconRes = if (batteryState.isCharging) {
                         R.drawable.ic_battery_charging
                     } else {

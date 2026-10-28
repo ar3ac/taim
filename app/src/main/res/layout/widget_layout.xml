@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="6dp">
 
-    <!-- 1. ORA: Outfit SemiBold (~78sp), spessore bold ma non bold, leggermente più grande -->
+    <!-- 1. ORA: Google Sans SemiBold (~76sp), la tipografia originale Pixel Lockscreen/Clock -->
     <TextClock
         android:id="@+id/clock_time"
         android:layout_width="wrap_content"
@@ -14,7 +14,7 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:textAlignment="center"
-        android:fontFamily="@font/outfit_semibold"
+        android:fontFamily="@font/googlesans_semibold"
         android:format12Hour="HH:mm"
         android:format24Hour="HH:mm"
         android:includeFontPadding="false"
@@ -24,18 +24,18 @@
         android:shadowDy="2"
         android:shadowRadius="10"
         android:textColor="#FFFFFFFF"
-        android:textSize="78sp" />
+        android:textSize="76sp" />
 
-    <!-- 2. DATA: Outfit Regular (~19sp), margin-top: 2dp, opacity: 0.9 -->
+    <!-- 2. DATA: Google Sans Regular (~19sp), margin-top: 3dp, opacity: 0.9 -->
     <TextClock
         android:id="@+id/clock_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="3dp"
         android:gravity="center"
         android:textAlignment="center"
-        android:fontFamily="@font/outfit_regular"
+        android:fontFamily="@font/googlesans_regular"
         android:format12Hour="EEEE d MMMM"
         android:format24Hour="EEEE d MMMM"
         android:includeFontPadding="false"
@@ -46,7 +46,7 @@
         android:textColor="#E6FFFFFF"
         android:textSize="19sp" />
 
-    <!-- 3. BATTERIA: Pillola Orizzontale Minimal (Stile 1), margin-top: 14dp, gap: 6dp -->
+    <!-- 3. BATTERIA: Verticale con badge circolare del fulmine nell'angolo, margin-top: 14dp -->
     <LinearLayout
         android:id="@+id/battery_row"
         android:layout_width="wrap_content"
@@ -56,13 +56,13 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <!-- Percentuale (85%) PRIMA dell'icona: Outfit SemiBold (~24sp) -->
+        <!-- Percentuale (85%) PRIMA dell'icona: Google Sans SemiBold (~24sp) -->
         <TextView
             android:id="@+id/battery_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="6dp"
-            android:fontFamily="@font/outfit_semibold"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/googlesans_semibold"
             android:gravity="center"
             android:includeFontPadding="false"
             android:shadowColor="#66000000"
@@ -73,7 +73,7 @@
             android:textColor="#FFFFFFFF"
             android:textSize="24sp" />
 
-        <!-- Icona Pillola Orizzontale DOPO la percentuale -->
+        <!-- Icona Batteria Verticale (con badge circolare nell'angolo in carica) -->
         <ImageView
             android:id="@+id/battery_icon"
             android:layout_width="24dp"
