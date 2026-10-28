@@ -4,9 +4,9 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="6dp">
+    android:padding="8dp">
 
-    <!-- 1. Digital 24h Time: Inter SemiBold, large font, subtle drop shadow, centered -->
+    <!-- 1. ORA: 4.2rem (~68sp), font-weight: 600 (SemiBold), line-height: 1, letter-spacing: -1px -->
     <TextClock
         android:id="@+id/clock_time"
         android:layout_width="wrap_content"
@@ -18,65 +18,68 @@
         android:format12Hour="HH:mm"
         android:format24Hour="HH:mm"
         android:includeFontPadding="false"
-        android:shadowColor="#80000000"
-        android:shadowDx="1.5"
-        android:shadowDy="2.0"
-        android:shadowRadius="4.0"
+        android:letterSpacing="-0.02"
+        android:shadowColor="#66000000"
+        android:shadowDx="0"
+        android:shadowDy="2"
+        android:shadowRadius="10"
         android:textColor="#FFFFFFFF"
-        android:textSize="60sp" />
+        android:textSize="68sp" />
 
-    <!-- 2. Extended Date: Inter Regular, small font, subtle drop shadow, centered -->
+    <!-- 2. DATA: 1.2rem (~19sp), font-weight: 400 (Regular), margin-top: 4px, opacity: 0.9 -->
     <TextClock
         android:id="@+id/clock_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="4dp"
         android:gravity="center"
         android:textAlignment="center"
         android:fontFamily="@font/inter_regular"
         android:format12Hour="EEEE d MMMM"
         android:format24Hour="EEEE d MMMM"
         android:includeFontPadding="false"
-        android:shadowColor="#80000000"
-        android:shadowDx="1.0"
-        android:shadowDy="1.5"
-        android:shadowRadius="3.0"
-        android:textColor="#FFFFFFFF"
-        android:textSize="14sp" />
+        android:shadowColor="#66000000"
+        android:shadowDx="0"
+        android:shadowDy="2"
+        android:shadowRadius="8"
+        android:textColor="#E6FFFFFF"
+        android:textSize="19sp" />
 
-    <!-- 3. Battery Row: Material Design vector + percentage, Inter SemiBold, centered -->
+    <!-- 3. BATTERIA: margin-top: 16px, gap: 6px -->
     <LinearLayout
         android:id="@+id/battery_row"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/battery_icon"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:contentDescription="@string/battery"
-            android:src="@drawable/ic_battery_std" />
-
+        <!-- Percentuale 1.5rem (~24sp), font-weight: 600 (SemiBold) PRIMA dell'icona -->
         <TextView
             android:id="@+id/battery_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
             android:fontFamily="@font/inter_semibold"
             android:gravity="center"
             android:includeFontPadding="false"
-            android:shadowColor="#80000000"
-            android:shadowDx="1.0"
-            android:shadowDy="1.5"
-            android:shadowRadius="3.0"
-            android:text="--%"
+            android:shadowColor="#66000000"
+            android:shadowDx="0"
+            android:shadowDy="2"
+            android:shadowRadius="8"
+            android:text="85%"
             android:textColor="#FFFFFFFF"
-            android:textSize="14sp" />
+            android:textSize="24sp" />
+
+        <!-- Icona Batteria 24x24dp DOPO la percentuale -->
+        <ImageView
+            android:id="@+id/battery_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="@string/battery"
+            android:src="@drawable/ic_battery_std" />
     </LinearLayout>
 
 </LinearLayout>

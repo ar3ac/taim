@@ -200,31 +200,40 @@ class MainActivity : ComponentActivity() {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                // Digital Time (60sp SemiBold Inter)
+                // Digital 24h Time (4.2rem -> 68sp, SemiBold 600, letterSpacing -1sp)
                 Text(
                     text = timeFormat.format(now),
-                    fontSize = 58.sp,
+                    fontSize = 68.sp,
                     fontWeight = FontWeight.SemiBold,
                     fontFamily = Inter,
+                    letterSpacing = (-1).sp,
                     color = Color.White
                 )
 
-                // Date (Inter Regular)
+                // Extended Date (1.2rem -> 19sp, Regular 400, opacity 0.9)
                 Text(
                     text = dateFormat.format(now),
-                    fontSize = 14.sp,
+                    fontSize = 19.sp,
                     fontWeight = FontWeight.Normal,
                     fontFamily = Inter,
-                    color = Color.White
+                    color = Color.White.copy(alpha = 0.9f),
+                    modifier = Modifier.padding(top = 4.dp)
                 )
 
-                Spacer(modifier = Modifier.height(10.dp))
-
-                // Battery Row
+                // Battery Row (marginTop 16dp, gap 6dp, percentage 24sp first, 24dp icon second)
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.padding(top = 16.dp)
                 ) {
+                    Text(
+                        text = "${batteryState.percentage}%",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        fontFamily = Inter,
+                        color = Color.White
+                    )
+                    Spacer(modifier = Modifier.width(6.dp))
                     val iconRes = if (batteryState.isCharging) {
                         R.drawable.ic_battery_charging
                     } else {
@@ -234,15 +243,7 @@ class MainActivity : ComponentActivity() {
                         painter = painterResource(id = iconRes),
                         contentDescription = "Battery",
                         tint = Color.White,
-                        modifier = Modifier.size(17.dp)
-                    )
-                    Spacer(modifier = Modifier.width(6.dp))
-                    Text(
-                        text = "${batteryState.percentage}%",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        fontFamily = Inter,
-                        color = Color.White
+                        modifier = Modifier.size(24.dp)
                     )
                 }
             }
