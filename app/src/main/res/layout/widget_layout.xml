@@ -4,9 +4,9 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="8dp">
+    android:padding="6dp">
 
-    <!-- 1. ORA: 4.2rem (~68sp), font-weight: 600 (SemiBold), line-height: 1, letter-spacing: -1px -->
+    <!-- 1. ORA: Outfit SemiBold (~78sp), spessore bold ma non bold, leggermente più grande -->
     <TextClock
         android:id="@+id/clock_time"
         android:layout_width="wrap_content"
@@ -14,28 +14,28 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center"
         android:textAlignment="center"
-        android:fontFamily="@font/inter_semibold"
+        android:fontFamily="@font/outfit_semibold"
         android:format12Hour="HH:mm"
         android:format24Hour="HH:mm"
         android:includeFontPadding="false"
-        android:letterSpacing="-0.02"
+        android:letterSpacing="-0.01"
         android:shadowColor="#66000000"
         android:shadowDx="0"
         android:shadowDy="2"
         android:shadowRadius="10"
         android:textColor="#FFFFFFFF"
-        android:textSize="68sp" />
+        android:textSize="78sp" />
 
-    <!-- 2. DATA: 1.2rem (~19sp), font-weight: 400 (Regular), margin-top: 4px, opacity: 0.9 -->
+    <!-- 2. DATA: Outfit Regular (~19sp), margin-top: 2dp, opacity: 0.9 -->
     <TextClock
         android:id="@+id/clock_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="2dp"
         android:gravity="center"
         android:textAlignment="center"
-        android:fontFamily="@font/inter_regular"
+        android:fontFamily="@font/outfit_regular"
         android:format12Hour="EEEE d MMMM"
         android:format24Hour="EEEE d MMMM"
         android:includeFontPadding="false"
@@ -46,23 +46,23 @@
         android:textColor="#E6FFFFFF"
         android:textSize="19sp" />
 
-    <!-- 3. BATTERIA: margin-top: 16px, gap: 6px -->
+    <!-- 3. BATTERIA: Pillola Orizzontale Minimal (Stile 1), margin-top: 14dp, gap: 6dp -->
     <LinearLayout
         android:id="@+id/battery_row"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="14dp"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <!-- Percentuale 1.5rem (~24sp), font-weight: 600 (SemiBold) PRIMA dell'icona -->
+        <!-- Percentuale (85%) PRIMA dell'icona: Outfit SemiBold (~24sp) -->
         <TextView
             android:id="@+id/battery_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="6dp"
-            android:fontFamily="@font/inter_semibold"
+            android:fontFamily="@font/outfit_semibold"
             android:gravity="center"
             android:includeFontPadding="false"
             android:shadowColor="#66000000"
@@ -73,7 +73,7 @@
             android:textColor="#FFFFFFFF"
             android:textSize="24sp" />
 
-        <!-- Icona Batteria 24x24dp DOPO la percentuale -->
+        <!-- Icona Pillola Orizzontale DOPO la percentuale -->
         <ImageView
             android:id="@+id/battery_icon"
             android:layout_width="24dp"
