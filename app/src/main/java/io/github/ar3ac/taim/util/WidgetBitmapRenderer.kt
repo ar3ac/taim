@@ -55,3 +55,4 @@ object WidgetBitmapRenderer {
         return bitmap
     }
 }
+

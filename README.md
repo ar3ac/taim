@@ -56,14 +56,15 @@ io.github.ar3ac.taim
     └── TaimWidgetReceiver.kt     # GlanceAppWidgetReceiver connecting system widget lifecycle
 ```
 
-### 1. Accurate Time Without Battery Drain (`AndroidRemoteViews`)
-Standard Compose/Glance widgets that attempt to tick time using `WorkManager` or background alarms get throttled by Android 12+ Doze mode and drain battery. **Taim** solves this by embedding an Android `TextClock` inside Glance using `AndroidRemoteViews`. The system launcher updates the clock in real-time within SystemUI with zero process wakes.
+### 1. Accurate Time & Zero-Drain Scheduling (`AlarmManager` + `isInteractive`)
+To bypass third-party launcher restrictions (like Nova Launcher failing to resolve custom OEM font files across processes), **Taim** renders text using an in-process high-DPI `WidgetBitmapRenderer`.
+- An exact minute ticker (`ClockScheduler`) schedules an alarm for the `:00` second boundary using `AlarmManager.setExactAndAllowWhileIdle`.
+- **Zero-Drain Optimization**: When the screen turns off (`PowerManager.isInteractive == false`), minute alarms are cancelled. No CPU wakes occur while the phone is in your pocket or asleep.
+- **Instant Wakeup**: Upon turning on the screen or unlocking (`ACTION_SCREEN_ON` and `ACTION_USER_PRESENT`), the widget updates instantly and resumes the minute ticker.
 
-### 2. Dynamic Battery Lifecycle (`ACTION_BATTERY_CHANGED`)
-- On Android 8.0+ (API 26+), `ACTION_BATTERY_CHANGED` is restricted and cannot be declared statically in `AndroidManifest.xml`.
-- Taim dynamically registers `BatteryReceiver` inside `TaimApp` using `ContextCompat.registerReceiver` with `RECEIVER_EXPORTED` (Android 14+ compatible).
-- In addition, power state broadcasts (`ACTION_POWER_CONNECTED` and `ACTION_POWER_DISCONNECTED`) are declared in `AndroidManifest.xml` so that plugging/unplugging immediately wakes the widget even if the app process was dormant.
-- On widget instantiation, `BatteryUtils.getBatteryState()` synchronously retrieves the cached sticky intent from Android so there is never a blank or stale initial state.
+### 2. Real-Time Synchronized Battery (`ACTION_BATTERY_CHANGED`)
+- At every minute tick (and whenever the screen is turned on or the phone is unlocked), Taim synchronously queries Android's cached sticky `ACTION_BATTERY_CHANGED` intent.
+- Power connect and disconnect events (`ACTION_POWER_CONNECTED` / `ACTION_POWER_DISCONNECTED`) and battery state flags (`BATTERY_LOW` / `BATTERY_OKAY`) are declared in the manifest, immediately waking the widget whenever charging status changes.
 
 ---
 

@@ -6,14 +6,11 @@ import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import io.github.ar3ac.taim.receiver.BatteryReceiver
 import io.github.ar3ac.taim.util.BatteryUtils
+import io.github.ar3ac.taim.util.ClockScheduler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-/**
- * GlanceAppWidgetReceiver implementation for Taim widget.
- * Bridges Android AppWidget lifecycle with Jetpack Glance.
- */
 class TaimWidgetReceiver : GlanceAppWidgetReceiver() {
 
     override val glanceAppWidget: GlanceAppWidget = TaimWidget()
@@ -25,7 +22,7 @@ class TaimWidgetReceiver : GlanceAppWidgetReceiver() {
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
 
-        // Ensure the initial battery state is cached and pushed to the widget upon placement
+        // Ensure fresh battery state
         val initialBattery = BatteryUtils.getBatteryState(context)
         CoroutineScope(Dispatchers.IO).launch {
             BatteryReceiver.updateAllWidgets(
@@ -34,6 +31,18 @@ class TaimWidgetReceiver : GlanceAppWidgetReceiver() {
                 isCharging = initialBattery.isCharging
             )
         }
+
+        // Ensure clock ticker is scheduled
+        ClockScheduler.scheduleNextMinute(context)
+    }
+
+    override fun onEnabled(context: Context) {
+        super.onEnabled(context)
+        ClockScheduler.scheduleNextMinute(context)
+    }
+
+    override fun onDisabled(context: Context) {
+        super.onDisabled(context)
+        ClockScheduler.cancelNextMinute(context)
     }
 }
-
