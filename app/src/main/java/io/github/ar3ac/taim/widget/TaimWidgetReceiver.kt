@@ -22,7 +22,7 @@ class TaimWidgetReceiver : GlanceAppWidgetReceiver() {
     ) {
         super.onUpdate(context, appWidgetManager, appWidgetIds)
 
-        // Ensure fresh battery state
+        // Ensure fresh battery state on widget load
         val initialBattery = BatteryUtils.getBatteryState(context)
         CoroutineScope(Dispatchers.IO).launch {
             BatteryReceiver.updateAllWidgets(
@@ -32,7 +32,6 @@ class TaimWidgetReceiver : GlanceAppWidgetReceiver() {
             )
         }
 
-        // Ensure clock ticker is scheduled
         ClockScheduler.scheduleNextMinute(context)
     }
 

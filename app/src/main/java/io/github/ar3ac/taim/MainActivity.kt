@@ -3,16 +3,17 @@ package io.github.ar3ac.taim
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
+import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,10 +31,14 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,8 +50,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.lifecycleScope
 import io.github.ar3ac.taim.util.BatteryUtils
 import io.github.ar3ac.taim.widget.TaimWidgetReceiver
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -60,8 +68,11 @@ val GoogleSans = FontFamily(
 
 class MainActivity : ComponentActivity() {
 
+    private var isBatteryExempt by mutableStateOf(true)
+
     override fun onResume() {
         super.onResume()
+        checkBatteryOptimization()
         val battery = BatteryUtils.getBatteryState(this)
         lifecycleScope.launch(Dispatchers.IO) {
             io.github.ar3ac.taim.receiver.BatteryReceiver.updateAllWidgets(
@@ -72,9 +83,33 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun checkBatteryOptimization() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val powerManager = getSystemService(Context.POWER_SERVICE) as? PowerManager
+            isBatteryExempt = powerManager?.isIgnoringBatteryOptimizations(packageName) ?: true
+        } else {
+            isBatteryExempt = true
+        }
+    }
+
+    private fun requestIgnoreBatteryOptimization() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            try {
+                val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                    data = Uri.parse("package:$packageName")
+                }
+                startActivity(intent)
+            } catch (e: Exception) {
+                val fallback = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
+                startActivity(fallback)
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        checkBatteryOptimization()
 
         setContent {
             MaterialTheme {
@@ -117,6 +152,37 @@ class MainActivity : ComponentActivity() {
 
                             // Center: Widget Live Simulation Preview
                             WidgetPreviewCard()
+
+                            // Battery Optimization Banner (if not exempt)
+                            if (!isBatteryExempt) {
+                                Card(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 8.dp),
+                                    shape = RoundedCornerShape(16.dp),
+                                    colors = CardDefaults.cardColors(containerColor = Color(0xFF2C2518))
+                                ) {
+                                    Column(
+                                        modifier = Modifier.padding(16.dp),
+                                        horizontalAlignment = Alignment.CenterHorizontally
+                                    ) {
+                                        Text(
+                                            text = "Per aggiornamenti in tempo reale precisi al minuto in standby, imposta la batteria su 'Senza restrizioni'.",
+                                            color = Color(0xFFFFD580),
+                                            fontSize = 13.sp,
+                                            fontFamily = GoogleSans,
+                                            textAlign = TextAlign.Center
+                                        )
+                                        Spacer(modifier = Modifier.height(10.dp))
+                                        OutlinedButton(
+                                            onClick = { requestIgnoreBatteryOptimization() },
+                                            shape = RoundedCornerShape(12.dp)
+                                        ) {
+                                            Text("Consenti Senza Restrizioni", color = Color.White, fontSize = 13.sp)
+                                        }
+                                    }
+                                }
+                            }
 
                             // Bottom: Pin Action & Instructions
                             Column(

@@ -14,7 +14,7 @@ object ClockScheduler {
 
     /**
      * Schedules an exact alarm at the exact boundary of the next minute (:00 seconds).
-     * Uses setExactAndAllowWhileIdle so it triggers with high precision without polling.
+     * Uses setExactAndAllowWhileIdle so it triggers with high precision even in Doze mode.
      */
     fun scheduleNextMinute(context: Context) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager ?: return
@@ -30,7 +30,10 @@ object ClockScheduler {
         )
 
         val now = System.currentTimeMillis()
-        val nextMinute = (now / 60000 + 1) * 60000
+        var nextMinute = (now / 60000 + 1) * 60000
+        if (nextMinute - now < 800) {
+            nextMinute += 60000
+        }
 
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -57,7 +60,7 @@ object ClockScheduler {
     }
 
     /**
-     * Cancels any pending minute alarms (e.g. when screen is turned off to save battery).
+     * Cancels any pending minute alarms if all widgets are removed.
      */
     fun cancelNextMinute(context: Context) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager ?: return

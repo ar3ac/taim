@@ -21,18 +21,15 @@ class TaimApp : Application() {
 
     private val batteryReceiver = BatteryReceiver()
 
-    private val screenStateReceiver = object : BroadcastReceiver() {
+    // System tick and screen wake receiver
+    private val timeTickReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
             when (intent.action) {
+                Intent.ACTION_TIME_TICK,
                 Intent.ACTION_SCREEN_ON,
                 Intent.ACTION_USER_PRESENT -> {
-                    // Screen turned on: refresh time & battery immediately and resume minute updates
                     refreshWidgets(context)
                     ClockScheduler.scheduleNextMinute(context)
-                }
-                Intent.ACTION_SCREEN_OFF -> {
-                    // Screen turned off: stop alarms to save 100% of background resources
-                    ClockScheduler.cancelNextMinute(context)
                 }
             }
         }
@@ -41,7 +38,7 @@ class TaimApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        // Battery state changes
+        // Battery state changes (sticky broadcast)
         val batteryFilter = IntentFilter().apply {
             addAction(Intent.ACTION_BATTERY_CHANGED)
             addAction(Intent.ACTION_POWER_CONNECTED)
@@ -54,16 +51,16 @@ class TaimApp : Application() {
             ContextCompat.RECEIVER_EXPORTED
         )
 
-        // Screen state changes (instant wake / sleep optimization)
-        val screenFilter = IntentFilter().apply {
+        // System minute tick and screen on/unlock
+        val tickFilter = IntentFilter().apply {
+            addAction(Intent.ACTION_TIME_TICK)
             addAction(Intent.ACTION_SCREEN_ON)
-            addAction(Intent.ACTION_SCREEN_OFF)
             addAction(Intent.ACTION_USER_PRESENT)
         }
         ContextCompat.registerReceiver(
             this,
-            screenStateReceiver,
-            screenFilter,
+            timeTickReceiver,
+            tickFilter,
             ContextCompat.RECEIVER_EXPORTED
         )
 

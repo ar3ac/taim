@@ -17,9 +17,9 @@ import kotlinx.coroutines.launch
 class ClockAlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        val action = intent.action ?: return
         val powerManager = context.getSystemService(Context.POWER_SERVICE) as? PowerManager
-        val isScreenOn = powerManager?.isInteractive ?: true
+        val wakeLock = powerManager?.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "taim:alarm_update")
+        wakeLock?.acquire(3000)
 
         val pendingResult = goAsync()
 
@@ -28,7 +28,7 @@ class ClockAlarmReceiver : BroadcastReceiver() {
                 // Read fresh battery state synchronously from sticky broadcast
                 val currentBattery = BatteryUtils.getBatteryState(context)
 
-                // Update Glance state and redraw all widgets
+                // Update Glance state and redraw all widgets with authentic Google Sans bitmap
                 val manager = GlanceAppWidgetManager(context)
                 val glanceIds = manager.getGlanceIds(TaimWidget::class.java)
 
@@ -42,14 +42,12 @@ class ClockAlarmReceiver : BroadcastReceiver() {
                     TaimWidget().update(context, glanceId)
                 }
 
-                // If the screen is interactive, schedule next minute alarm
-                if (isScreenOn) {
-                    ClockScheduler.scheduleNextMinute(context)
-                } else {
-                    // Screen is off: pause alarms to save 100% of background battery
-                    ClockScheduler.cancelNextMinute(context)
-                }
+                // Reschedule for the next minute tick continuously
+                ClockScheduler.scheduleNextMinute(context)
             } finally {
+                wakeLock?.let {
+                    if (it.isHeld) it.release()
+                }
                 pendingResult.finish()
             }
         }
